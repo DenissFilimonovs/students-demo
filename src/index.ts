@@ -11,7 +11,7 @@ app.use(parserMiddleware)
 
 
 app.get('/', (req: Request, res: Response) => {
-    let helloMessage = 'Hello INCUBATOR.EU.USA.LATVIA!!!'
+    let helloMessage = 'Hello INCUBATOR.EU.USA.LATVIA!!'
     res.send(helloMessage)
 })
 
@@ -63,10 +63,7 @@ app.delete('/products/:id', (req: Request, res: Response) => {
 app.get('/adresses', (req: Request, res: Response) => {
     res.send(adresses)
 })
-app.get('/adresses/:id', (req: Request, res: Response) => {
 
-
-})
 
 
 app.listen(port, () => {
