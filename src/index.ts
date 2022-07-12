@@ -4,7 +4,7 @@ const port = 5000
 
 app.get('/', (req:Request, res:Response) => {
 
-    let helloMessage = 'Hello INCUBATOR!!!';
+    let helloMessage = 'Hello INCUBATOR!';
     res.send(helloMessage)
 
 
