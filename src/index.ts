@@ -11,7 +11,7 @@ app.use(parserMiddleware)
 
 
 app.get('/', (req: Request, res: Response) => {
-    let helloMessage = 'Hello INCUBATOR.EU.USA.LATVIA!!!!'
+    let helloMessage = 'Hello INCUBATOR.EU.USA.LATVIA!!!!!'
     res.send(helloMessage)
 })
 
