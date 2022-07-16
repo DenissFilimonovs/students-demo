@@ -90,6 +90,7 @@ app.put('videos/:id',(req:Request,res:Response) => {
     if(video) {
         res.send(video)
         video.title === req.body.title;
+        author:'it-incubator.eu'
     }else{
         res.send(404)
     }
