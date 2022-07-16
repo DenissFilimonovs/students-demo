@@ -93,7 +93,7 @@ app.post('/videos',(req:Request,res:Response) => {
     }
     const newVideo = {
         id: Number(new Date()),
-        title: req.body.title,
+        title: title,
         author:'it-incubator.eu'
     }
     videos.push(newVideo)
@@ -103,10 +103,20 @@ app.post('/videos',(req:Request,res:Response) => {
 
 
 app.put('videos/:videoId',(req:Request,res:Response) => {
+    let title = req.body.title;
+    if(!title || typeof title !== 'string' || !title.trim()) {
+        res.status(400).send({
+            errorsMessages: [{
+                "message": "Incorrect title",
+                "field": "title"
+            }]
+        })
+        return;
+    }
     const id = Number(req.params.videoId)
     const video = videos.find(v=>v.id === id)
     if(video) {
-        video.title === req.body.title;
+        video.title = title;
         res.status(204).send(video)
     }else{
         res.send(400)
