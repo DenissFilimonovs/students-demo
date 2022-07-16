@@ -14,28 +14,6 @@ const videos = [
     {id: 4, title: 'About JS - 04', author: 'it-incubator.eu'},
     {id: 5, title: 'About JS - 05', author: 'it-incubator.eu'},
 ]
-const stena = [
-    {id: 1, color: 'orange'},
-    {id: 2, color: 'white'},
-    {id: 3, color: 'blue'},
-    {id: 4, color: 'red'},
-    {id: 5, color: 'pink'},
-]
-const pc = [
-    {id: 1, value: 'ram'},
-    {id: 2, value: 'hd'},
-    {id: 3, value: 'cd'},
-    {id: 4, value: 'processor'},
-    {id: 5, value: 'videocard'},
-]
-
-const monitor = [
-    {id: 1, title: 'philips'},
-    {id: 2, title: 'samsung'},
-    {id: 3, title: 'lg'},
-    {id: 4, title: 'xiaomi'},
-    {id: 5, title: 'benq'},
-]
 const parserMiddleware = bodyParser({})
 app.use(parserMiddleware)
 app.use(cors())
@@ -110,64 +88,18 @@ app.post('/videos',(req:Request,res:Response) => {
     }
     videos.push(newVideo)
     res.status(201).send(newVideo)
-
 })
 
 
 app.put('videos/:id',(req:Request,res:Response) => {
-    let video2 = videos.find(v=>v.id === Number(req.params.id));
-    if(video2) {
-        res.status(204).send(video2)
-        video2.title === req.body.title;
-        author:'it-incubator.eu'
+    let video = videos.find(v=>v.id === Number(req.params.id));
+    if(video) {
+        video.title === req.body.title;
+        res.status(204).send(video)
     }else{
         res.send(404)
     }
 })
-
-
-
-app.get('/monitor',(req:Request,res:Response) => {
-    if(req.query.title) {
-        let searchString = req.query.title.toString()
-        res.send(monitor.filter(m=>m.title.indexOf(searchString) > -1))
-    }else{
-        res.send(monitor)
-    }
-})
-
-
-app.post('/monitor',(req:Request,res:Response) => {
-    const newMonitor = {
-        id: Number((new Date())),
-        title: req.body.title
-
-    }
-    monitor.push(newMonitor)
-    res.status(201).send(newMonitor)
-})
-
-app.get('/monitor/:id',(req:Request,res:Response) => {
-    let monik = monitor.find(m=>m.id === Number(req.params.id))
-    if(monik) {
-        res.send(monik)
-    }else{
-        res.send(404)
-    }
-})
-
-
-app.delete('/monitor/:id',(req:Request,res:Response) => {
-    for(let i = 0;i<monitor.length;i++) {
-        if(monitor[i].id === Number(req.params.id)) {
-            monitor.splice(i, 1)
-            res.status(204).send(monitor)
-            return
-        }
-    }
-    res.send(404)
-})
-
 app.get('/products', (req:Request,res:Response) => {
     if(req.query.title) {
         let searchString = req.query.title.toString()
@@ -250,7 +182,11 @@ app.put('/addresses/:id',(req:Request,res:Response) => {
 
 app.get('/addresses/:adressesValue',(req:Request,res:Response) => {
     let address = addresses.find(a=>a.value === req.params.adressesValue)
-    res.send(address)
+    if(address) {
+        res.send(address)
+    }else{
+        res.send(404)
+    }
 })
 
 
