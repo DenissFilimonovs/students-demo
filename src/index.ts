@@ -82,8 +82,12 @@ app.post('/videos',(req:Request,res:Response) => {
         title: req.body.title,
         author: 'it-incubator.eu'
     }
+    if(videos) {
     videos.push(newVideo)
     res.status(201).send(newVideo)
+        }else{
+        res.send(404)
+    }
 })
 
 
@@ -114,6 +118,7 @@ app.post('/monitor',(req:Request,res:Response) => {
     const newMonitor = {
         id: Number((new Date())),
         title: req.body.title
+
     }
     monitor.push(newMonitor)
     res.status(201).send(newMonitor)
