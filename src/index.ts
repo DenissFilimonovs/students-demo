@@ -88,6 +88,7 @@ app.post('/videos',(req:Request,res:Response) => {
     }
     videos.push(newVideo)
     res.status(201).send(newVideo)
+
 })
 
 
@@ -97,7 +98,7 @@ app.put('videos/:id',(req:Request,res:Response) => {
         video.title === req.body.title
         res.status(204).send(video)
     }else{
-        res.send(404)
+        res.send(400)
     }
 })
 app.get('/products', (req:Request,res:Response) => {
