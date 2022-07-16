@@ -1,69 +1,175 @@
 import express, {Request, Response} from 'express'
-import bodyParser from 'body-parser'
+import cors from 'cors'
+import bodyParser from "body-parser";
+
 const app = express()
 const port = process.env.PORT || 5000
 
-const adresses = [{id: 1, value: 'Nometnu iela 13'}, {id: 2, value: 'Varsavas iela 10'}]
-const products = [{id: 1, title: 'makaroni'}, {id:2, title: 'ketcup'}]
+const addresses = [{id: 1, value: 'Nometnu iela 13'}, {id: 2, value: 'Varsavas iela 10'}]
+const products = [{id: 1 , title: 'apple'}, {id: 2, title: 'lemon'}]
+const videos = [
+    {id: 1, title: 'About JS - 01', author: 'it-incubator.eu'},
+    {id: 2, title: 'About JS - 02', author: 'it-incubator.lv'},
+    {id: 3, title: 'About JS - 03', author: 'it-incubator.usa'},
+    {id: 4, title: 'About JS - 04', author: 'it-incubator.uk'},
+    {id: 5, title: 'About JS - 05', author: 'it-incubator.fr'},
+]
+const stena = [
+    {id: 1, color: 'orange'},
+    {id: 2, color: 'white'},
+    {id: 3, color: 'blue'},
+    {id: 4, color: 'red'},
+    {id: 5, color: 'pink'},
+]
+const pc = [
+    {id: 1, value: 'ram'},
+    {id: 2, value: 'hd'},
+    {id: 3, value: 'cd'},
+    {id: 4, value: 'processor'},
+    {id: 5, value: 'videocard'},
+]
 
+const monitor = [
+    {id: 1, title: 'philips'},
+    {id: 2, title: 'samsung'},
+    {id: 3, title: 'lg'},
+    {id: 4, title: 'xiaomi'},
+    {id: 5, title: 'benq'},
+]
 const parserMiddleware = bodyParser({})
 app.use(parserMiddleware)
+app.use(cors())
 
 
-app.get('/', (req: Request, res: Response) => {
-    let helloMessage = 'Hello INCUBATOR.EU.USA.LATVIA!!!!!'
+
+app.get('/', (req:Request,res:Response) => {
+    let helloMessage = 'Hello IT-INCUBATOR.USA.LV!!!!!!'
     res.send(helloMessage)
 })
 
-app.get('/products', (req: Request, res: Response) => {
-    if (req.query.title) {
+app.get('/monitor',(req:Request,res:Response) => {
+    if(req.query.title) {
         let searchString = req.query.title.toString()
-        res.send(products.filter(p=>p.title.indexOf(searchString) > -1))
-    }else {
+        res.send(monitor.filter(m=>m.title.indexOf(searchString) > -1))
+    }else{
+        res.send(monitor)
+    }
+})
+
+
+app.post('/monitor',(req:Request,res:Response) => {
+    const newMonitor = {
+        id: Number((new Date())),
+        title: req.body.title
+    }
+    monitor.push(newMonitor)
+    res.status(201).send(newMonitor)
+})
+
+app.get('/monitor/:id',(req:Request,res:Response) => {
+    let monik = monitor.find(m=>m.id === Number(req.params.id))
+    if(monik) {
+        res.send(monik)
+    }else{
+        res.send(404)
+    }
+})
+
+
+app.delete('/monitor/:id',(req:Request,res:Response) => {
+    for(let i = 0;i<monitor.length;i++) {
+        if(monitor[i].id === Number(req.params.id)) {
+            monitor.splice(i, 1)
+            return
+        }
+    }
+    res.send(404)
+})
+
+app.get('/products', (req:Request,res:Response) => {
+    if(req.query.title) {
+        let searchString = req.query.title.toString()
+        res.send(products.filter(p=>p.title.indexOf(searchString) >-1))
+    }else{
         res.send(products)
     }
-
 })
-app.post('/products', (req: Request, res: Response) => {
-        const newProduct = {
-            id: +(new Date()),
-            title: req.body.title
-        }
-        products.push(newProduct);
-        res.status(201).send(newProduct)
-
+app.post('/products', (req:Request,res:Response) => {
+    const newProduct = {
+        id: Number((new Date())),
+        title: req.body.title
+    }
+    products.push(newProduct)
+    res.status(201).send(newProduct)
 })
-app.get('/products/:id', (req: Request, res: Response) => {
-    let product = products.find(p => p.id === +req.params.id)
+
+app.get('/products/:productsTitle',(req:Request,res:Response) => {
+    let product = products.find(p=>p.title === req.params.productsTitle)
+    if(product) {
+        res.send(product)
+    }else{
+        res.send(404)
+    }
+})
+app.get('/products/:id',(req:Request,res:Response) => {
+    let product = products.find(p=>p.id === Number(req.params.id))
     if(product){
         res.send(product)
     }else{
         res.send(404)
     }
 })
-app.put('/products/:id', (req: Request, res: Response) => {
-    let product = products.find(p => p.id === +req.params.id)
-    if(product){
-        product.title = req.body.title
-        res.send(product)
+
+app.get('/addresses',(req:Request,res:Response) => {
+    if(req.query.value) {
+        let searchString = req.query.value.toString()
+        res.send(addresses.filter(a => a.value.indexOf(searchString) > - 1))
     }else{
+        res.send(addresses)
+    }
+})
+app.post('/addresses',(req:Request,res:Response) => {
+    const newAdress = {
+        id: Number((new Date())),
+        value: req.body.value
+    }
+    addresses.push(newAdress)
+    res.status(201).send(newAdress)
+})
+
+app.get('/addresses/:id',(req:Request,res:Response) => {
+    let address = addresses.find(a=>a.id === Number(req.params.id))
+    if(address) {
+        res.send(address)
+    } else{
         res.send(404)
     }
 })
-app.delete('/products/:id', (req: Request, res: Response) => {
-    for(let i = 0;i<products.length;i++){
-        if(products[i].id === +req.params.id) {
-            products.splice(i,1);
-            res.send(204);
-            return;
+app.delete('/addresses/:id',(req:Request,res:Response) => {
+    for(let i = 0; i<addresses.length;i++) {
+        if(addresses[i].id === Number(req.params.id)) {
+            addresses.splice(i,1)
+            res.send(204)
+            return
         }
     }
-    res.send(404);
+    res.send(404)
 })
-app.get('/adresses', (req: Request, res: Response) => {
-    res.send(adresses)
+app.put('/addresses/:id',(req:Request,res:Response) => {
+    let address = addresses.find(a=>a.id === Number(req.params.id))
+    if(address) {
+        address.value = req.body.value
+        res.send(address)
+    } else{
+        res.send(404)
+    }
 })
 
+
+app.get('/addresses/:adressesValue',(req:Request,res:Response) => {
+    let address = addresses.find(a=>a.value === req.params.adressesValue)
+    res.send(address)
+})
 
 
 app.listen(port, () => {
