@@ -82,7 +82,7 @@ app.delete('/videos/:id',(req:Request,res:Response) => {
 
 app.post('/videos',(req:Request,res:Response) => {
     let title = req.body.title;
-    if(!title || typeof title !== 'string' || !title.trim()) {
+    if(!title || typeof title !== 'string' || !title.trim() || title.length>40) {
         res.status(400).send({
             errorsMessages: [{
                 message: "Incorrect title",
@@ -105,11 +105,11 @@ app.post('/videos',(req:Request,res:Response) => {
 
 app.put('videos/:videoId',(req:Request,res:Response) => {
     let title = req.body.title;
-    if(!title || typeof title !== 'string' || !title.trim()) {
+    if(!title || typeof title !== 'string' || !title.trim() || title.length>40) {
         res.status(400).send({
             errorsMessages: [{
-                message: "Incorrect title",
-                field: "title"
+                'message': "Incorrect title",
+                'field': "title"
             }],
             resultCode: 1
         })
@@ -124,6 +124,7 @@ app.put('videos/:videoId',(req:Request,res:Response) => {
         res.send(400)
     }
 })
+
 app.get('/products', (req:Request,res:Response) => {
     if(req.query.title) {
         let searchString = req.query.title.toString()
