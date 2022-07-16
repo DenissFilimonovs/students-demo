@@ -132,7 +132,7 @@ app.delete('/monitor/:id',(req:Request,res:Response) => {
     for(let i = 0;i<monitor.length;i++) {
         if(monitor[i].id === Number(req.params.id)) {
             monitor.splice(i, 1)
-            res.sendStatus(204)
+            res.status(204).send(monitor)
             return
         }
     }
