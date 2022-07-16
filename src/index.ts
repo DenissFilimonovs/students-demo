@@ -81,8 +81,15 @@ app.get('/videos/:author',(req:Request,res:Response) => {
         res.send(404)
     }
 })
+app.get('/videos/:title',(req:Request,res:Response) => {
+    let video = videos.find(v => v.title === req.params.title)
+    if(video) {
+        res.send(video)
+    }else{
+        res.send(404)
+    }
+})
 
-app.get('/')
 
 app.delete('/videos/:id',(req:Request,res:Response) => {
     for(let i=0; i<videos.length;i++) {
