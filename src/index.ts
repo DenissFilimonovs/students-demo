@@ -56,6 +56,15 @@ app.get('/videos',(req:Request,res:Response) => {
     }
 })
 
+app.get('/videos/:id',(req:Request,res:Response) => {
+    let video = videos.find(v=>v.id === Number(req.params.id));
+    if(video) {
+        res.send(video);
+    }else{
+        res.send(404);
+    }
+})
+
 app.delete('/videos/:id',(req:Request,res:Response) => {
     for(let i=0; i<videos.length;i++) {
         if(videos[i].id === Number(req.params.id)) {
@@ -76,14 +85,6 @@ app.post('/videos',(req:Request,res:Response) => {
     res.status(201).send(newVideo)
 })
 
-app.get('/videos/:id',(req:Request,res:Response) => {
-    let video = videos.find(v=>v.id === Number(req.params.id));
-    if(video) {
-        res.send(video);
-    }else{
-        res.send(404);
-    }
-})
 
 app.put('videos/:id',(req:Request,res:Response) => {
     let video = videos.find(v=>v.id === Number(req.params.id));
@@ -131,6 +132,7 @@ app.delete('/monitor/:id',(req:Request,res:Response) => {
     for(let i = 0;i<monitor.length;i++) {
         if(monitor[i].id === Number(req.params.id)) {
             monitor.splice(i, 1)
+            res.sendStatus(204)
             return
         }
     }
