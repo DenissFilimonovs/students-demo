@@ -26,31 +26,19 @@ app.get('/', (req:Request,res:Response) => {
 })
 
 app.get('/videos',(req:Request,res:Response) => {
-    if(req.query.title) {
-        let searchString = req.query.title.toString();
-        res.send(videos.filter(v=>v.title.indexOf(searchString) > -1));
-    }else{
-        res.send(videos)
-    }
-})
-app.get('/videos',(req:Request,res:Response) => {
-    if(req.query.author) {
-        let searchString = req.query.author.toString();
-        res.send(videos.filter(v=>v.author.indexOf(searchString) > -1));
-    }else{
-        res.send(videos)
-    }
+    res.send(videos)
 })
 
-app.get('/videos/:id',(req:Request,res:Response) => {
-    let video = videos.find(v=>v.id === Number(req.params.id));
+app.get('/videos/:videoId',(req:Request,res:Response) => {
+    const id = +req.params.videoId;
+    const video = videos.find(v=>v.id === id)
     if(video) {
         res.send(video);
     }else{
         res.send(404);
     }
 })
-
+/*
 app.get('/videos/:author',(req:Request,res:Response) => {
     let video = videos.find(v => v.author === req.params.author)
     if(video) {
@@ -58,8 +46,9 @@ app.get('/videos/:author',(req:Request,res:Response) => {
     }else{
         res.send(404)
     }
-})
-app.get('/videos/:title',(req:Request,res:Response) => {
+})*/
+/*app.get('/videos/:title',(req:Request,res:Response) => {
+
     let video = videos.find(v => v.title === req.params.title)
     if(video) {
         res.send(video)
@@ -67,17 +56,17 @@ app.get('/videos/:title',(req:Request,res:Response) => {
         res.send(404)
     }
 })
+*/
 
-
-app.delete('/videos/:id',(req:Request,res:Response) => {
-    for(let i=0; i<videos.length;i++) {
-        if(videos[i].id === Number(req.params.id)) {
-            videos.splice(i,1)
-            res.send(204)
-            return
-        }
+app.delete('/videos/:videoId',(req:Request,res:Response) => {
+    const id = +req.params.videoId;
+    const newVideos = videos.filter(v=>v.id !== id)
+    if(newVideos.length<videos.length) {
+        videos = newVideos
+        res.send(204)
+    }else{
+        res.send(404)
     }
-    res.send(404)
 })
 
 app.post('/videos',(req:Request,res:Response) => {
