@@ -55,6 +55,14 @@ app.get('/videos',(req:Request,res:Response) => {
         res.send(videos)
     }
 })
+app.get('/videos',(req:Request,res:Response) => {
+    if(req.query.author) {
+        let searchString = req.query.author.toString();
+        res.send(videos.filter(v=>v.author.indexOf(searchString) > -1));
+    }else{
+        res.send(videos)
+    }
+})
 
 app.get('/videos/:id',(req:Request,res:Response) => {
     let video = videos.find(v=>v.id === Number(req.params.id));
@@ -64,6 +72,17 @@ app.get('/videos/:id',(req:Request,res:Response) => {
         res.send(404);
     }
 })
+
+app.get('/videos/:author',(req:Request,res:Response) => {
+    let video = videos.find(v => v.author === req.params.author)
+    if(video) {
+        res.send(video)
+    }else{
+        res.send(404)
+    }
+})
+
+app.get('/')
 
 app.delete('/videos/:id',(req:Request,res:Response) => {
     for(let i=0; i<videos.length;i++) {
@@ -82,20 +101,17 @@ app.post('/videos',(req:Request,res:Response) => {
         title: req.body.title,
         author: 'it-incubator.eu'
     }
-    if(videos) {
     videos.push(newVideo)
     res.status(201).send(newVideo)
-        }else{
-        res.send(404)
-    }
+
 })
 
 
 app.put('videos/:id',(req:Request,res:Response) => {
-    let video = videos.find(v=>v.id === Number(req.params.id));
-    if(video) {
-        res.status(204).send(video)
-        video.title === req.body.title;
+    let video2 = videos.find(v=>v.id === Number(req.params.id));
+    if(video2) {
+        res.status(204).send(video2)
+        video2.title === req.body.title;
         author:'it-incubator.eu'
     }else{
         res.send(404)
