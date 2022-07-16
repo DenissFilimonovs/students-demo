@@ -94,7 +94,7 @@ app.post('/videos',(req:Request,res:Response) => {
 app.put('videos/:id',(req:Request,res:Response) => {
     let video = videos.find(v=>v.id === Number(req.params.id));
     if(video) {
-        video.title === req.body.title;
+        video.title === req.body.title
         res.status(204).send(video)
     }else{
         res.send(404)
