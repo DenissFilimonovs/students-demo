@@ -81,10 +81,20 @@ app.delete('/videos/:id',(req:Request,res:Response) => {
 })
 
 app.post('/videos',(req:Request,res:Response) => {
+    let title = req.body.title;
+    if(!title || typeof title !== 'string' || !title.trim()) {
+        res.status(400).send({
+            errorsMessages: [{
+                "message": "Incorrect title",
+                "field": "title"
+            }]
+        })
+        return;
+    }
     const newVideo = {
-        id: Number((new Date())),
+        id: Number(new Date()),
         title: req.body.title,
-        author: 'it-incubator.eu'
+        author:'it-incubator.eu'
     }
     videos.push(newVideo)
     res.status(201).send(newVideo)
@@ -92,13 +102,14 @@ app.post('/videos',(req:Request,res:Response) => {
 })
 
 
-app.put('videos/:id',(req:Request,res:Response) => {
-    let video = videos.find(v=>v.id === Number(req.params.id));
+app.put('videos/:videoId',(req:Request,res:Response) => {
+    const id = Number(req.params.videoId)
+    const video = videos.find(v=>v.id === id)
     if(video) {
-        video.title === req.body.title
+        video.title === req.body.title;
         res.status(204).send(video)
     }else{
-        res.send(400)
+        res.send(404)
     }
 })
 app.get('/products', (req:Request,res:Response) => {
