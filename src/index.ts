@@ -134,8 +134,8 @@ app.post('/videos', (req:Request,res:Response) => {
             errorsMessages: [{
                 'message': 'Incorrect title',
                 'field': 'title'
-            }],
-            resultCode: 1
+            }]
+
         })
         return;
     }
@@ -173,8 +173,8 @@ app.put('/videos/:id',(req:Request,res:Response) => {
             errorsMessages: [{
                 message: 'Incorrect title',
                 field: 'title'
-            }],
-            resultCode: 1
+            }]
+
         })
         return
     }
