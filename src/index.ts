@@ -160,7 +160,7 @@ app.get('/videos/:videoId',(req:Request,res:Response) => {
     const id = +req.params.videoId
     const video = videos.find(v=>v.id===id)
     if(video){
-        res.send(video)
+        res.status(200).send(video)
     }else{
         res.send(404)
     }
@@ -169,7 +169,7 @@ app.get('/videos/:videoId',(req:Request,res:Response) => {
 app.put('/videos/:id',(req:Request,res:Response) => {
     let title = req.body.title
     if(!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
-        res.status(400).send({
+        res.status(204).send({
             errorsMessages: [{
                 message: 'Incorrect title',
                 field: 'title'
