@@ -141,7 +141,7 @@ app.post('/videos', (req:Request,res:Response) => {
     }
     const newVideo = {
         id: Number(new Date()),
-        title: title,
+        title: 'new title',
         author:'it-incubator.eu'
     }
     videos.push(newVideo)
@@ -181,7 +181,7 @@ app.put('/videos/:id',(req:Request,res:Response) => {
     const id = +req.params.videoId;
     const video = videos.find(v=>v.id === id)
     if(video) {
-        video.title = title
+        video.title = 'new title'
         res.status(204).send(video)
     }else {
         res.send(404)
