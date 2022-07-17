@@ -181,7 +181,7 @@ app.put('/videos/:id',(req:Request,res:Response) => {
     const id = +req.params.videoId;
     const video = videos.find(v=>v.id === id)
     if(video) {
-        video.title = title
+        video.title = "title"
         res.status(204).send(video)
     }else {
         res.send(404)
