@@ -114,14 +114,13 @@ app.put('videos/:videoId',(req:Request,res:Response) => {
 })
 */
 app.delete('/videos/:id',(req:Request,res:Response) => {
-    for(let i = 0; i<videos.length;i++) {
-        if(videos[i].id === Number(req.params.id)) {
-            videos.splice(i,1)
-            res.send(204)
-            return
-        }
+    const id = +req.params.videoId
+    const newVideos = videos.filter(v=>v.id !== id)
+    if(newVideos.length < videos.length) {
+        res.send(204)
+    }else{
+        res.send(404)
     }
-    res.send(404)
 })
 
 app.get('/videos', (req:Request,res:Response) => {
@@ -160,12 +159,16 @@ app.get('/videos/:id',(req:Request,res:Response) => {
 })
 
 app.put('/videos/:id',(req:Request,res:Response) => {
-    let video = videos.find(p=>p.id === Number(req.params.id))
-    if(video) {
-        video.title = req.body.title
-        res.send(video)
-    } else{
-        res.send(404)
+    let title = req.body.title
+    if(!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
+        res.status(400).send({
+            errorsMessages: [{
+                message: 'Incorrect title',
+                field: 'title'
+            }],
+            resultCode: 1
+        })
+        return
     }
 })
 /*
