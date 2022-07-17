@@ -166,7 +166,7 @@ app.get('/videos/:videoId',(req:Request,res:Response) => {
     }
 })
 
-app.put('/videos/:id',(req:Request,res:Response) => {
+app.put('/videos/:videoId',(req:Request,res:Response) => {
     let title = req.body.title
     if(!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
         res.status(400).send({
@@ -181,7 +181,7 @@ app.put('/videos/:id',(req:Request,res:Response) => {
     const id = +req.params.videoId;
     const video = videos.find(v=>v.id === id)
     if(video) {
-        video.title = "title"
+        video.title = title
         res.status(204).send(video)
     }else {
         res.send(404)
