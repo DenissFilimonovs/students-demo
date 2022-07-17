@@ -4,9 +4,9 @@ import bodyParser from "body-parser";
 
 const app = express()
 const port = process.env.PORT || 5000
-
+/*
 const addresses = [{id: 1, value: 'Nometnu iela 13'}, {id: 2, value: 'Varsavas iela 10'}]
-const products = [{id: 1 , title: 'apple'}, {id: 2, title: 'lemon'}]
+const products = [{id: 1 , title: 'apple'}, {id: 2, title: 'lemon'}]*/
 let videos = [
     {id: 1, title: 'About JS - 01', author: 'it-incubator.eu'},
     {id: 2, title: 'About JS - 02', author: 'it-incubator.eu'},
@@ -147,7 +147,7 @@ app.post('/videos', (req:Request,res:Response) => {
     videos.push(newVideo)
     res.status(201).send(newVideo)
 })
-
+/*
 app.get('/videos/:productsTitle',(req:Request,res:Response) => {
     let video = videos.find(p=>p.title === req.params.productsTitle)
     if(video) {
@@ -155,7 +155,7 @@ app.get('/videos/:productsTitle',(req:Request,res:Response) => {
     }else{
         res.send(404)
     }
-})
+})*/
 app.get('/videos/:videoId',(req:Request,res:Response) => {
     const id = +req.params.videoId
     const video = videos.find(v=>v.id===id)
