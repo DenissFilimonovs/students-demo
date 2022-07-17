@@ -7,7 +7,7 @@ const port = process.env.PORT || 5000
 
 const addresses = [{id: 1, value: 'Nometnu iela 13'}, {id: 2, value: 'Varsavas iela 10'}]
 const products = [{id: 1 , title: 'apple'}, {id: 2, title: 'lemon'}]
-const videos = [
+let videos = [
     {id: 1, title: 'About JS - 01', author: 'it-incubator.eu'},
     {id: 2, title: 'About JS - 02', author: 'it-incubator.eu'},
     {id: 3, title: 'About JS - 03', author: 'it-incubator.eu'},
@@ -77,7 +77,7 @@ app.post('/videos',(req:Request,res:Response) => {
                 field: "title"
             }],
             resultCode: 1
-        })
+
         return;
     }
     const newVideo = {
@@ -113,10 +113,11 @@ app.put('videos/:videoId',(req:Request,res:Response) => {
     }
 })
 */
-app.delete('/videos/:id',(req:Request,res:Response) => {
+app.delete('/videos/:videoId',(req:Request,res:Response) => {
     const id = +req.params.videoId
     const newVideos = videos.filter(v=>v.id !== id)
     if(newVideos.length < videos.length) {
+        videos = newVideos
         res.send(204)
     }else{
         res.send(404)
@@ -124,21 +125,27 @@ app.delete('/videos/:id',(req:Request,res:Response) => {
 })
 
 app.get('/videos', (req:Request,res:Response) => {
-    if(req.query.title) {
-        let searchString = req.query.title.toString()
-        res.send(videos.filter(p=>p.title.indexOf(searchString) >-1))
-    }else{
-        res.send(videos)
-    }
+    res.send(videos)
 })
 app.post('/videos', (req:Request,res:Response) => {
-    const newProduct = {
-        id: Number((new Date())),
-        title: req.body.title,
-        author: 'it-incubator.eu'
+    let title = req.body.title;
+    if(!title || typeof title !== 'string' || !title.trim() || title.length>40) {
+        res.status(400).send({
+            errorsMessages: [{
+                message: "Incorrect title",
+                field: "title"
+            }],
+            resultCode: 1
+        })
+        return;
     }
-    videos.push(newProduct)
-    res.status(201).send(newProduct)
+    const newVideo = {
+        id: Number(new Date()),
+        title: title,
+        author:'it-incubator.eu'
+    }
+    videos.push(newVideo)
+    res.status(201).send(newVideo)
 })
 
 app.get('/videos/:productsTitle',(req:Request,res:Response) => {
@@ -149,8 +156,9 @@ app.get('/videos/:productsTitle',(req:Request,res:Response) => {
         res.send(404)
     }
 })
-app.get('/videos/:id',(req:Request,res:Response) => {
-    let video = videos.find(p=>p.id === Number(req.params.id))
+app.get('/videos/:videoId',(req:Request,res:Response) => {
+    const id = +req.params.videoId
+    const video = videos.find(v=>v.id===id)
     if(video){
         res.send(video)
     }else{
@@ -169,6 +177,14 @@ app.put('/videos/:id',(req:Request,res:Response) => {
             resultCode: 1
         })
         return
+    }
+    const id = +req.params.videoId;
+    const video = videos.find(v=>v.id === id)
+    if(video) {
+        video.title = title
+        res.status(204).send(video)
+    }else {
+        res.send(404)
     }
 })
 /*
