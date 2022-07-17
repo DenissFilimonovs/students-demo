@@ -184,7 +184,7 @@ app.put('/videos/:id',(req:Request,res:Response) => {
         video.title = title
         res.status(204).send(video)
     }else {
-        res.send(400)
+        res.send(404)
     }
 })
 /*
