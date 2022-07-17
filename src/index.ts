@@ -169,7 +169,7 @@ app.get('/videos/:videoId',(req:Request,res:Response) => {
 app.put('/videos/:id',(req:Request,res:Response) => {
     let title = req.body.title
     if(!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
-        res.status(204).send({
+        res.status(400).send({
             errorsMessages: [{
                 message: 'Incorrect title',
                 field: 'title'
