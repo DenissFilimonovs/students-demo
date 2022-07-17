@@ -24,7 +24,7 @@ app.get('/', (req:Request,res:Response) => {
     let helloMessage = 'Hello IT-INCUBATOR.USA.LV!!!!!!'
     res.send(helloMessage)
 })
-
+/*
 app.get('/videos',(req:Request,res:Response) => {
     res.send(videos)
 })
@@ -57,7 +57,7 @@ app.get('/videos/:author',(req:Request,res:Response) => {
     }
 })
 */
-
+/*
 app.delete('/videos/:videoId',(req:Request,res:Response) => {
     const id = +req.params.videoId;
     const newVideos = videos.filter(v=>v.id !== id)
@@ -112,41 +112,63 @@ app.put('videos/:videoId',(req:Request,res:Response) => {
         res.send(400)
     }
 })
+*/
+app.delete('/videos/:id',(req:Request,res:Response) => {
+    for(let i = 0; i<videos.length;i++) {
+        if(videos[i].id === Number(req.params.id)) {
+            videos.splice(i,1)
+            res.send(204)
+            return
+        }
+    }
+    res.send(404)
+})
 
-app.get('/products', (req:Request,res:Response) => {
+app.get('/videos', (req:Request,res:Response) => {
     if(req.query.title) {
         let searchString = req.query.title.toString()
-        res.send(products.filter(p=>p.title.indexOf(searchString) >-1))
+        res.send(videos.filter(p=>p.title.indexOf(searchString) >-1))
     }else{
-        res.send(products)
+        res.send(videos)
     }
 })
-app.post('/products', (req:Request,res:Response) => {
+app.post('/videos', (req:Request,res:Response) => {
     const newProduct = {
         id: Number((new Date())),
-        title: req.body.title
+        title: req.body.title,
+        author: 'it-incubator.eu'
     }
-    products.push(newProduct)
+    videos.push(newProduct)
     res.status(201).send(newProduct)
 })
 
-app.get('/products/:productsTitle',(req:Request,res:Response) => {
-    let product = products.find(p=>p.title === req.params.productsTitle)
-    if(product) {
-        res.send(product)
+app.get('/videos/:productsTitle',(req:Request,res:Response) => {
+    let video = videos.find(p=>p.title === req.params.productsTitle)
+    if(video) {
+        res.send(video)
     }else{
         res.send(404)
     }
 })
-app.get('/products/:id',(req:Request,res:Response) => {
-    let product = products.find(p=>p.id === Number(req.params.id))
-    if(product){
-        res.send(product)
+app.get('/videos/:id',(req:Request,res:Response) => {
+    let video = videos.find(p=>p.id === Number(req.params.id))
+    if(video){
+        res.send(video)
     }else{
         res.send(404)
     }
 })
 
+app.put('/videos/:id',(req:Request,res:Response) => {
+    let video = videos.find(p=>p.id === Number(req.params.id))
+    if(video) {
+        video.title = req.body.title
+        res.send(video)
+    } else{
+        res.send(404)
+    }
+})
+/*
 app.get('/addresses',(req:Request,res:Response) => {
     if(req.query.value) {
         let searchString = req.query.value.toString()
@@ -201,7 +223,7 @@ app.get('/addresses/:adressesValue',(req:Request,res:Response) => {
         res.send(404)
     }
 })
-
+*/
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
