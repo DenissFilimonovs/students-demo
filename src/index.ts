@@ -132,8 +132,8 @@ app.post('/videos', (req:Request,res:Response) => {
     if(!title || typeof title !== 'string' || !title.trim() || title.length>40) {
         res.status(400).send({
             errorsMessages: [{
-                message: "Incorrect title",
-                field: "title"
+                'message': 'Incorrect title',
+                'field': 'title'
             }],
             resultCode: 1
         })
